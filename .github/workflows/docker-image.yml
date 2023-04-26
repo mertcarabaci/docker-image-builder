@@ -13,7 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - env:
+        RUNNER_DIR: '/home/runner/work/docker-image-builder/docker-image-builder'
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: | 
-        pwd
+        docker build ${RUNNER_DIR} --file Dockerfile --tag ghcr.io/ituitis20-arabaci19/docker-image-builder:latest
+        docker run ghcr.io/ituitis20-arabaci19/docker-image-builder:latest
+        docker push ghcr.io/ituitis20-arabaci19/docker-image-builder:latest
