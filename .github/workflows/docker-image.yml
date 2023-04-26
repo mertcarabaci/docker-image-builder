@@ -16,6 +16,6 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: | 
-        docker build . --file Dockerfile --tag ghcr.io/ituitis20-arabaci19/docker-image-builder:latest
+        docker build / --file Dockerfile --tag ghcr.io/ituitis20-arabaci19/docker-image-builder:latest
         docker run ghcr.io/ituitis20-arabaci19/docker-image-builder:latest
         docker push ghcr.io/ituitis20-arabaci19/docker-image-builder:latest
