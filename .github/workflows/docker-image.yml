@@ -10,7 +10,7 @@ jobs:
 
   build:
     env:
-      RUNNER_DIR: '/home/runner/work/docker-image-builder/docker-image-builder'
+      VERSION: '1.0.0'
     runs-on: ubuntu-latest
 
     steps:
@@ -23,5 +23,5 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     - name: Build the Docker image
       run: | 
-        docker build ${RUNNER_DIR} --file Dockerfile --tag ghcr.io/ituitis20-arabaci19/docker-image-builder:latest
-        docker push ghcr.io/ituitis20-arabaci19/docker-image-builder:latest
+        docker build ${RUNNER_DIR} --file Dockerfile --tag ghcr.io/ituitis20-arabaci19/docker-image-builder:${VERSION}
+        docker push ghcr.io/ituitis20-arabaci19/docker-image-builder:${VERSION}
