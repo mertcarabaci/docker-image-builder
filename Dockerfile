@@ -12,7 +12,7 @@ RUN apt install build-essential -y
 RUN apt install gdb -y
 
 RUN apt update
-RUN apt install valgrind
+RUN apt install valgrind -y
 
 RUN apt update
 RUN apt install git -y
