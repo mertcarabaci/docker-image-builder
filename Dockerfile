@@ -15,6 +15,7 @@ RUN apt update
 RUN apt install git -y
 
 RUN apt update
+RUN git config --global --add safe.directory /home/ubuntu/ProjectTechCom
 
 EXPOSE 22
 CMD ["/usr/sbin/sshd","-D"]
