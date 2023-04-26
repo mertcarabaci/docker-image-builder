@@ -9,12 +9,11 @@ on:
 jobs:
 
   build:
-
+    env:
+      RUNNER_DIR: '/home/runner/work/docker-image-builder/docker-image-builder'
     runs-on: ubuntu-latest
 
     steps:
-    - env:
-        RUNNER_DIR: '/home/runner/work/docker-image-builder/docker-image-builder'
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: | 
