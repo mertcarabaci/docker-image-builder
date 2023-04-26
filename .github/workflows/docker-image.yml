@@ -11,7 +11,7 @@ jobs:
   build:
     env:
       RUNNER_DIR: '/home/runner/work/docker-image-builder/docker-image-builder'
-      VERSION: '1.0.0'
+      VERSION: '1.0.1'
     runs-on: ubuntu-latest
 
     steps:
