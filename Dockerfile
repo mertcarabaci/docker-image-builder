@@ -1,4 +1,4 @@
-FROM ubuntu:bionic
+FROM ubuntu:latest
 
 RUN apt-get -y update
 RUN apt-get install openssh-server sudo -y
