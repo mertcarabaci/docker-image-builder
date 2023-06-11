@@ -1,6 +1,7 @@
 from pytorch/pytorch:1.8.0-cuda11.1-cudnn8-devel
 
 # Add the keys and set permissions
+RUN cat /etc/os-release && lscpu | grep Architecture
 RUN apt-get update && apt-get install -y openssh-server
 RUN ssh-keygen
 RUN mkdir -p /root/.ssh && touch /root/.ssh/authorized_keys && \
