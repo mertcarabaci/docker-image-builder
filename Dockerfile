@@ -1,10 +1,11 @@
 FROM pytorch/pytorch:1.8.0-cuda11.1-cudnn8-devel
 
-RUN ssh-keygen
+RUN apt-key del 7fa2af80 && \\
+    apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub
 
 # Add the keys and set permissions
 RUN apt-get update && apt-get install -y openssh-server && \
-    mkdir -p /root/.ssh && touch /root/.ssh/authorized_keys && \
+    ssh-keygen && mkdir -p /root/.ssh && touch /root/.ssh/authorized_keys && \
     cat /root/.ssh/id_rsa.pub > /root/.ssh/authorized_keys && \
     chmod 600 /root/.ssh/authorized_keys && \
     mkdir -p /var/run/sshd && \
