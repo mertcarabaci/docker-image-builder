@@ -1,6 +1,6 @@
-from pytorch/pytorch:1.8.0-cuda11.1-cudnn8-devel
+FROM pytorch/pytorch:1.8.0-cuda11.1-cudnn8-devel
 
-RUN apt-get update && apt-get install wget
+RUN apt-get update && apt-get install -y wget 
 RUN wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-keyring_1.0-1_all.deb && \
     sudo dpkg -i cuda-keyring_1.0-1_all.deb
     
