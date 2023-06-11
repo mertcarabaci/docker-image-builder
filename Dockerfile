@@ -1,18 +1,18 @@
-FROM ubuntu:latest
+from pytorch/pytorch:1.8.0-cuda10.2-cudnn8-devel
 
-RUN apt-get -y update
-RUN apt-get install openssh-server sudo -y
-RUN useradd -rm -d /home/ubuntu -s /bin/bash -g root -G sudo -u 1000 test 
-RUN usermod -aG sudo test
-RUN service ssh start
-RUN echo 'test:test' | chpasswd
+# Add the keys and set permissions
+RUN apt-get update && apt-get install -y openssh-server && \
+    mkdir -p /root/.ssh && touch /root/.ssh/authorized_keys && \
+    echo $ssh_pub_key > /root/.ssh/authorized_keys && \
+    chmod 600 /root/.ssh/authorized_keys && \
+    mkdir -p /var/run/sshd && \
+    sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 
-RUN apt-get -y update
-RUN apt-get -y install build-essential
-RUN apt-get -y install gdb
+RUN echo "root:123" | chpasswd
 
-RUN apt-get -y update
-RUN apt-get -y install git
+RUN pip3 install tensorboardX && \
+    apt-get install -y git
 
-EXPOSE 22
-CMD ["/usr/sbin/sshd","-D"]
+RUN git clone https://github.com/thuyngch/Overcoming-Catastrophic-Forgetting.git
+
+ENTRYPOINT env | grep _ >> /etc/environment && service ssh start & /usr/sbin/sshd -D
