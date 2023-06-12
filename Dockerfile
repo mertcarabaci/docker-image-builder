@@ -3,6 +3,6 @@ WORKDIR /root
 
 RUN pip install tensorflow==1.14 && pip install protobuf==3.19
 
-RUN git clone -b feature/bug-fixes https://github.com/mertcarabaci/overcoming-catastrophic.git
+RUN git clone -b feature/lfd-term-project https://github.com/CemalettinCelalToy/less-forgetful-nns.git
 
 CMD ["/bin/bash"]
