@@ -25,7 +25,7 @@ jobs:
     - name: Extract branch name
       run: |
         export BRANCH_NAME="$(echo $GITHUB_REF | sed 's/refs\/heads\/feature\///g')"
-        echo "BRANCH_NAME= " "${BRANCH_NAME}"
+        echo "BRANCH_NAME:""${BRANCH_NAME}"
     - name: Build the Docker image
       run: | 
         docker build ${RUNNER_DIR} --file Dockerfile --tag ghcr.io/mertcarabaci/${BRANCH_NAME}:${BUILD_VERSION}
