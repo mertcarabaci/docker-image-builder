@@ -1,8 +1,29 @@
-FROM continuumio/anaconda3:2020.02
-WORKDIR /root
+FROM jupyter/tensorflow-notebook
 
-RUN pip install tensorflow==1.14 && pip install protobuf==3.19
+# Windows Render related
+USER root
+RUN apt-get update -y && \ 
+    apt-get install -y xvfb && \
+    apt-get install -y python-opengl 
 
-RUN git clone -b feature/lfd-term-project https://github.com/CemalettinCelalToy/less-forgetful-nns.git
+# Optional, needed for some environments
+RUN apt-get install -y cmake && \
+    apt-get install -y zlib1g zlib1g-dev 
 
-CMD ["/bin/bash"]
+RUN apt update && apt install openssh-server sudo -y
+RUN useradd -rm -d /home/dev -s /bin/bash -g root -G sudo -u 1000 dev 
+RUN usermod -aG sudo dev
+RUN service ssh start && echo 'dev:dev' | chpasswd
+
+USER dev
+
+RUN pip install \
+        gym \
+        pyvirtualdisplay 
+
+# Needed for some environments
+RUN conda install swig
+RUN pip install box2d-py atari_py pystan
+
+EXPOSE 22
+CMD ["/usr/sbin/sshd","-D"]
