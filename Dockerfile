@@ -4,7 +4,7 @@ FROM jupyter/tensorflow-notebook
 USER root
 RUN apt-get update -y && \ 
     apt-get install -y xvfb && \
-    apt-get install -y python-opengl 
+    apt-get install -y PyOpenGL
 
 # Optional, needed for some environments
 RUN apt-get install -y cmake && \
