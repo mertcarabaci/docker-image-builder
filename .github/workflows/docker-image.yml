@@ -13,16 +13,20 @@ jobs:
       BUILD_VERSION: '1.0'
       
     runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
 
     steps:
     - uses: actions/checkout@v3
-    - name: Login to GitHub Container Registry
-      uses: docker/login-action@v2
+    - name: Authenticate to Google Cloud
+      id: auth
+      uses: RafikFarhad/push-to-gcr-github-action@v5-rc1
       with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-    - name: Build the Docker image
-      run: | 
-        docker build ${RUNNER_DIR} --file Dockerfile --tag ghcr.io/mertcarabaci/${BRANCH_NAME}:${BUILD_VERSION}
-        docker push ghcr.io/mertcarabaci/${BRANCH_NAME}:${BUILD_VERSION}
+        gcloud_service_key: "${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }}"
+        registry: gcr.io
+        project_id: mert-personal
+        image_name: database-api
+        image_tag: test-${{ github.sha }}, ${{ github.sha }}
+        dockerfile: ./Dockerfile
+        target: build
