@@ -2,7 +2,9 @@ name: Publish Docker Image
 
 on:
   push:
-    branches: [ "feature/.*" ]
+    branches:
+      - 'feature/**'
+  
 
 jobs:
 
@@ -10,19 +12,38 @@ jobs:
     env:
       RUNNER_DIR: '/home/runner/work/docker-image-builder/docker-image-builder'
       BRANCH_NAME: '$(echo $GITHUB_REF | sed "s/refs\/heads\/feature\///g")'
-      BUILD_VERSION: '1.0'
+      BUILD_VERSION: 'v1.0'
       
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
-    - name: Login to GitHub Container Registry
-      uses: docker/login-action@v2
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-    - name: Build the Docker image
+    - name: Create Next Tag
+      id: get_tag_name
       run: | 
-        docker build ${RUNNER_DIR} --file Dockerfile --tag ghcr.io/mertcarabaci/${BRANCH_NAME}:${BUILD_VERSION}
-        docker push ghcr.io/mertcarabaci/${BRANCH_NAME}:${BUILD_VERSION}
+        git fetch --prune --prune-tags
+        echo $BUILD_ID
+        echo $(bash ./.github/workflows/tag.bash)
+        echo "BUILD_ID=${BUILD_VERSION}-$(bash ./.github/workflows/tag.bash)" >> $GITHUB_ENV
+        echo "BUILD_ID=${BUILD_VERSION}-$(bash ./.github/workflows/tag.bash)" >> $GITHUB_OUTPUT
+    - name: Build the Docker image
+      run: |         
+        echo $BUILD_ID
+
+    - name: Authenticate to Google Cloud
+      run: |
+        echo $BUILD_ID
+
+    - name: Tag
+      run: |
+        tag=$BUILD_ID
+        git config user.name "${GITHUB_ACTOR}"
+        git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+        git tag -a "${tag}" -m "new tag"
+        git push origin "${tag}"
+
+    - name: Authenticate to Google Cloud
+      run: |
+        echo ${{ steps.get_tag_name.outputs.BUILD_ID }}
+
+
