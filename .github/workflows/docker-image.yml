@@ -25,15 +25,13 @@ jobs:
       run: | 
         echo $(bash ./.github/workflows/tag.bash)
         echo $BUILD_VERSION
-        export BUILD_VERSION="${BUILD_VERSION}-$(bash ./.github/workflows/tag.bash)"
-        echo $BUILD_VERSION
+        export BUILD_VERSION="${BUILD_VERSION}-$(bash ./.github/workflows/tag.bash)">> $GITHUB_ENV
+        echo "BUILD_ID="${BUILD_VERSION}-$(bash ./.github/workflows/tag.bash)" >> $GITHUB_ENV
+         
+        echo $BUILD_ID
 
     - name: Authenticate to Google Cloud
       run: |
-        echo $(bash ./.github/workflows/tag.bash)
-        echo $BUILD_VERSION
-        export BUILD_VERSION="${BUILD_VERSION}-$(bash ./.github/workflows/tag.bash)"
-        echo $BUILD_VERSION > env.id
-        echo ${{ env.id }}
+        echo $BUILD_ID
 
 
