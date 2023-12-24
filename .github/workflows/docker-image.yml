@@ -25,7 +25,7 @@ jobs:
       run: | 
         echo $(bash ./.github/workflows/tag.bash)
         echo $BUILD_VERSION
-        BUILD_VERSION="${BUILD_VERSION}-$(bash ./.github/workflows/tag.bash)"
+        export BUILD_VERSION="${BUILD_VERSION}-$(bash ./.github/workflows/tag.bash)"
         echo $BUILD_VERSION
 
     - name: Authenticate to Google Cloud
