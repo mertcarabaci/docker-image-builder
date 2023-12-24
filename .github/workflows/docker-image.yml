@@ -20,19 +20,27 @@ jobs:
       id-token: 'write'
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Authenticate to Google Cloud
-        id: auth
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: '${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }}'
-      - name: Building and pushing the image
-        uses: RafikFarhad/push-to-gcr-github-action@v5-rc1 # <- use this on your workflow
-        with:
-          # gcloud_service_key: ${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }} # <- not needed when used with google-github-actions/auth@v2
-          registry: gcr.io
-          project_id: mert-personal
-          image_name: database-api
-          image_tag: test-${{ github.sha }}, ${{ github.sha }}
-          dockerfile: ./Dockerfile
-          context: .
+    - uses: actions/checkout@v3
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    - name: Build the Docker image
+      run: | 
+        docker build -t gcr.io/mert-personal/database-api2:${{ github.sha }} .
+
+    - name: Authenticate to Google Cloud
+      id: auth
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: '${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }}'
+    - name: Pushing the image
+      uses: RafikFarhad/push-to-gcr-github-action@v5-rc1 # <- use this on your workflow
+      with:
+        registry: gcr.io
+        project_id: mert-personal
+        image_name: database-api2
+        image_tag: ${{ github.sha }}
+        push_only: true
