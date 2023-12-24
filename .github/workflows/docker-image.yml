@@ -30,11 +30,4 @@ jobs:
     - name: Authenticate to Google Cloud
       run: |
         echo $BUILD_VERSION 
-    - name: Pushing the image
-      uses: RafikFarhad/push-to-gcr-github-action@v5-rc1 # <- use this on your workflow
-      with:
-        registry: gcr.io
-        project_id: mert-personal
-        image_name: database-api2
-        image_tag: ${{ github.sha }}
-        push_only: true
+
