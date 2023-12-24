@@ -33,8 +33,12 @@ jobs:
       run: |
         echo $BUILD_ID
 
-    - uses: actions-ecosystem/action-push-tag@v1
-      with:
-        tag: $BUILD_ID
+    - name: Tag
+      run: |
+        tag=$BUILD_ID
+        git config user.name "${GITHUB_ACTOR}"
+        git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+        git tag -a "${tag}" -m "new tag"
+        git push origin "${tag}"
 
 
