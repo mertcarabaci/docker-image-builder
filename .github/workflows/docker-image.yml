@@ -19,11 +19,13 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Create Next Tag
+      id: get_tag_name
       run: | 
         git fetch --prune --prune-tags
         echo $BUILD_ID
         echo $(bash ./.github/workflows/tag.bash)
         echo "BUILD_ID=${BUILD_VERSION}-$(bash ./.github/workflows/tag.bash)" >> $GITHUB_ENV
+        echo "BUILD_ID=${BUILD_VERSION}-$(bash ./.github/workflows/tag.bash)" >> $GITHUB_OUTPUT
     - name: Build the Docker image
       run: |         
         echo $BUILD_ID
@@ -39,13 +41,9 @@ jobs:
         git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
         git tag -a "${tag}" -m "new tag"
         git push origin "${tag}"
-        
-    - name: Get the tag name
-      id: get_tag_name
-      run: echo ::set-output name=GIT_TAG_NAME::${BUILD_ID}
 
     - name: Authenticate to Google Cloud
       run: |
-        echo ${{ steps.get_tag_name.outputs.GIT_TAG_NAME }}
+        echo ${{ steps.get_tag_name.outputs.BUILD_ID }}
 
 
