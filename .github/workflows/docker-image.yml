@@ -30,5 +30,9 @@ jobs:
 
     - name: Authenticate to Google Cloud
       run: |
-        echo $BUILD_VERSION 
+        echo $(bash ./.github/workflows/tag.bash)
+        echo $BUILD_VERSION
+        export BUILD_VERSION="${BUILD_VERSION}-$(bash ./.github/workflows/tag.bash)"
+        echo $BUILD_VERSION
+        git tag $BUILD_VERSION | git push --tags
 
