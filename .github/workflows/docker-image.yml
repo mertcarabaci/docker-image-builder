@@ -42,7 +42,7 @@ jobs:
         
     - name: Get the tag name
       id: get_tag_name
-      run: echo ::set-output name=GIT_TAG_NAME::${GITHUB_REF/refs\/tags\//}
+      run: echo ::set-output name=GIT_TAG_NAME::${BUILD_ID}
 
     - name: Authenticate to Google Cloud
       run: |
