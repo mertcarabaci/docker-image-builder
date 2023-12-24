@@ -15,12 +15,6 @@ jobs:
       BUILD_VERSION: 'v1.0'
       
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-      pull-requests: write
-      issues: write
-      repository-projects: write
 
     steps:
     - uses: actions/checkout@v3
